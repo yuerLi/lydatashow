@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--Bootstrap-->
+    <link href="/Bootstrap/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-skins.min.css" />
+    <link href="/Bootstrap/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/Bootstrap/owner/Comm.css" />
+    <!-- Font Awesome -->
+    <script src="/Bootstrap/jquery-1.9.1.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/bootstrap.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/typeahead-bs2.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="/Bootstrap/echart/echarts.js"></script>
+</head>
+<body>
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            停电数据报表
+            <small>
+                <i class="icon-double-angle-right"></i>
+                <!--Dynamic tables and grids using jqGrid plugin-->
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+    <div class="form-group">
+        <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 时段 </label>
+        <div class="col-sm-4">
+            <input type="text" id="form-field-1" placeholder="时段" class="col-sm-12" />
+        </div>
+        <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 台区 </label>
+        <div class="col-sm-4">
+            <input type="text" id="form-field-2" placeholder="台区" class="col-sm-12" />
+        </div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </div>
+    <!--标签选择-->
+    <div class="form-group">
+        <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-7">
+												<label class="middle">
+													<input class="ace" type="checkbox" id="id-disable-check" />
+													<span class="lbl">按年</span>
+												</label>
+											</span>
+        </div>
+        <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-7">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">按月</span>
+												</label>
+											</span>
+        </div>
+        <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-7">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">按天</span>
+												</label>
+											</span>
+        </div>
+        <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-7">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">时段</span>
+												</label>
+											</span>
+        </div>
+        <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-7">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">台区</span>
+												</label>
+											</span>
+        </div>
+    </div>
+    <!--报表显示数据-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home">
+                            <i class="green icon-home bigger-110"></i>
+                            总天数
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#profile">
+                            总停电数
+                            <span class="badge badge-danger">4</span>
+                        </a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            总停电时长
+                            <i class="icon-caret-down bigger-110 width-auto"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-info">
+                            <li>
+                                <a data-toggle="tab" href="#dropdown1">@fat</a>
+                            </li>
+
+                            <li>
+                                <a data-toggle="tab" href="#dropdown2">@mdo</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane in active">
+                        <div id="main1" style="width: 800px;height:400px;"></div>
+                        <script>
+                            var myChart = echarts.init(document.getElementById('main1'));
+                            $.get('/Bootstrap/data/aqi-beijing.json', function (data) {
+                                myChart.setOption(option = {
+                                    title: {
+                                        text: '总天数'
+                                    },
+                                    tooltip: {
+                                        trigger: 'axis'
+                                    },
+                                    xAxis: {
+                                        data: data.map(function (item) {
+                                            return item[0];
+                                        })
+                                    },
+                                    yAxis: {
+                                        splitLine: {
+                                            show: false
+                                        }
+                                    },
+                                    toolbox: {
+                                        left: 'center',
+                                        feature: {
+                                            dataZoom: {
+                                                yAxisIndex: 'none'
+                                            },
+                                            restore: {},
+                                            saveAsImage: {}
+                                        }
+                                    },
+                                    dataZoom: [{
+                                        startValue: '2014-06-01'
+                                    }, {
+                                        type: 'inside'
+                                    }],
+                                    visualMap: {
+                                        top: 10,
+                                        right: 10,
+                                        pieces: [{
+                                            gt: 0,
+                                            lte: 50,
+                                            color: '#096'
+                                        }, {
+                                            gt: 50,
+                                            lte: 100,
+                                            color: '#ffde33'
+                                        }, {
+                                            gt: 100,
+                                            lte: 150,
+                                            color: '#ff9933'
+                                        }, {
+                                            gt: 150,
+                                            lte: 200,
+                                            color: '#cc0033'
+                                        }, {
+                                            gt: 200,
+                                            lte: 300,
+                                            color: '#660099'
+                                        }, {
+                                            gt: 300,
+                                            color: '#7e0023'
+                                        }],
+                                        outOfRange: {
+                                            color: '#999'
+                                        }
+                                    },
+                                    series: {
+                                        name: 'Beijing AQI',
+                                        type: 'line',
+                                        data: data.map(function (item) {
+                                            return item[1];
+                                        }),
+                                        markLine: {
+                                            silent: true,
+                                            data: [{
+                                                yAxis: 50
+                                            }, {
+                                                yAxis: 100
+                                            }, {
+                                                yAxis: 150
+                                            }, {
+                                                yAxis: 200
+                                            }, {
+                                                yAxis: 300
+                                            }]
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div id="profile" class="tab-pane">
+                        <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
+                    </div>
+                    <div id="dropdown1" class="tab-pane">
+                        <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.</p>
+                    </div>
+                    <div id="dropdown2" class="tab-pane">
+                        <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /span -->
+
+    </div>
+</div>
+</body>
+</html>

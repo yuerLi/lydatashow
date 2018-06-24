@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/Bootstrap/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/jquery-ui-1.10.3.full.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-skins.min.css" />
+    <link href="/Bootstrap/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Bootstrap/ace/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/Bootstrap/owner/Comm.css" />
+    <link rel="stylesheet" href="/Bootstrap/Bootstrap/css/bootstrap-multiselect.css" />
+    <!-- Font Awesome -->
+    <script src="/Bootstrap/jquery-1.9.1.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/bootstrap.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/typeahead-bs2.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/date-time/bootstrap-datepicker.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+    <script src="/Bootstrap/ace/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+    <script src="/Bootstrap/Bootstrap/js/bootstrap-multiselect.js"></script>
+    <script src="/Bootstrap/echart/echarts.js"></script>
+</head>
+<body>
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            用电预测
+            <small>
+                <i class="icon-double-angle-right"></i>
+                Dynamic tables and grids using jqGrid plugin
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+    <div class="form-group">
+        <label class="col-sm-1 control-label no-padding-right" > 选择算法 </label>
+        <div class="col-sm-11">
+            <div class="col-sm-3">
+            <span class="help-inline col-xs-12 col-sm-12">
+												<label class="middle">
+													<input class="ace" type="checkbox" id="id-disable-check" />
+													<span class="lbl">随机森林算法</span>
+												</label>
+											</span>
+            </div>
+            <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-12">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">K-Means算法</span>
+												</label>
+											</span>
+            </div>
+            <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-12">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">SVM算法</span>
+												</label>
+											</span>
+            </div>
+            <div class="col-sm-2">
+            <span class="help-inline col-xs-12 col-sm-12">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">KNN算法</span>
+												</label>
+											</span>
+            </div>
+            <div class="col-sm-3">
+            <span class="help-inline col-xs-12 col-sm-12">
+												<label class="middle">
+													<input class="ace" type="checkbox"  />
+													<span class="lbl">逻辑回归算法</span>
+												</label>
+											</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <label class="col-sm-1 control-label no-padding-left" >参数</label>
+            <div class="col-sm-2">
+                <input type="text" id="form-field-2" placeholder="参数" class="col-sm-12" />
+            </div>
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-default">计算准确率</button>
+            </div>
+            <div class="col-sm-1">
+                <button type="submit" class="btn btn-default">重置</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-condensed">
+            <thead>
+            <tr><td>算法</td><td>随机森林算法</td><td>K-Means算法</td><td>SVM算法</td><td>KNN算法</td><td>逻辑回归算法</td></tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>准确率</td><td>0.856</td><td>0.793</td><td>0.78</td><td>0.88</td><td>0.78</td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="main1" style="width: 800px;height:400px;"></div>
+        <script>
+            var myChart = echarts.init(document.getElementById('main1'));
+            option = {
+                title: {
+                    text: '算法准确度分析'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['随机森林算法','随机森林算法','SVM算法','KNN算法','逻辑回归算法']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['','随机森林算法','随机森林算法','SVM算法','KNN算法','逻辑回归算法']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '走势',
+                        type: 'line',
+                        stack: '总量',
+                        data: [0.89, 0.88, 0.78, 0.90, 0.78, 0.56, 0.78]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        </script>
+    </div>
+</div>
+</body>
+</html>
